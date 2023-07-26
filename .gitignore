@@ -1,0 +1,7 @@
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/java/main/
+/build/classes/java/test/
+/src/main/resources/static/
+/src/main/resources/templates/

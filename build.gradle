@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.8'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    // 코틀린 플러그인 추가
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+}
+
+group = 'com.group'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // 코틀린 의존성 추가
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 코틀린 컴파일러
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+// 코틀린 테스트
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
