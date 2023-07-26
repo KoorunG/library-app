@@ -1,10 +1,6 @@
 package com.group.libraryapp.calculator
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -43,6 +39,10 @@ class CalculatorTest {
     fun `0으로 나누면 에러가 발생한다`() {
         val calculator = Calculator(5)
         assertThrows<IllegalArgumentException> { calculator.divide(0) }
+            // apply 스코프함수로 에러메세지까지 검증 가능하다!
+            .apply {
+                assertThat(message).isEqualTo("0으로 나눌 수 없습니다!")
+            }
     }
 
     @Test
