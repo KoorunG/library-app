@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import javax.transaction.Transactional
 
 // 동일 패키지의 자바코드를
 // 코틀린코드로 테스트
@@ -66,7 +65,7 @@ class UserServiceTest @Autowired constructor(
     fun `유저 정보 업데이트하기`() {
         // given
         val savedUser = userRepository.save(User("A", null))
-        val request = UserUpdateRequest(savedUser.id, "B")
+        val request = UserUpdateRequest(savedUser.id!!, "B")    // 엔티티에서는 nullable 타입으로 선언됐으나, PK이기 때문에 절대 null이 아니므로 단언문으로 처리한다.
         // when
         userService.updateUserName(request)
         // then

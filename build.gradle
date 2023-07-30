@@ -4,6 +4,16 @@ plugins {
     id 'java'
     // 코틀린 플러그인 추가
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    // 코틀린 jpa 플러그인 추가 (기본생성자 생성)
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
+    // 코틀린 spring 플러그인 추가 (allOpen 옵션 포함)
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
+    annotation("javax.persistence.MappedSuperclass")
 }
 
 group = 'com.group'
@@ -21,6 +31,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // 코틀린 의존성 추가
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    // 코틀린 reflect 의존성 추가
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
 }
 
 tasks.named('test') {
