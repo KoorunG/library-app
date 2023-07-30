@@ -1,5 +1,8 @@
 package com.group.libraryapp.domain.book;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +18,7 @@ public class Book {
   private Long id;
 
   @Column(nullable = false)
+  @NotNull
   private String name;
 
   public Book() {

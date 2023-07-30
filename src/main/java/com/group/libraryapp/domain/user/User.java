@@ -19,6 +19,7 @@ public class User {
   private Long id;
 
   @Column(nullable = false)
+  @NotNull
   private String name;
 
   private Integer age;

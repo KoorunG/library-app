@@ -1,6 +1,7 @@
 package com.group.libraryapp.domain.user.loanhistory;
 
 import com.group.libraryapp.domain.user.User;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,14 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 public class UserLoanHistory {
 
+  public User getUser() {
+    return user;
+  }
+
+  public boolean isReturn() {
+    return isReturn;
+  }
+
   @Id
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
@@ -19,6 +28,7 @@ public class UserLoanHistory {
   @ManyToOne
   private User user;
 
+  @NotNull
   private String bookName;
 
   private boolean isReturn;
