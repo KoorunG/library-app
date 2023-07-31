@@ -13,8 +13,7 @@ import javax.persistence.OneToMany
 @Entity
 class User constructor( // 주생성자에 constuctor 키워드를 붙이면 Entity가 생성되는 코드를 쉽게 추적할 수 있다.
     @Column(nullable = false)
-    private var _name: String,
-    name: String,
+    var name: String,
 
     val age: Int?,
 
@@ -23,21 +22,17 @@ class User constructor( // 주생성자에 constuctor 키워드를 붙이면 Ent
     val id: Long? = null,
 ) {
 
-    // 1. Backing Property 사용 -> getter만 열어두고 setter는 숨김
-    val name: String
-        get() = this._name
-
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     val userLoanHistories: MutableList<UserLoanHistory> = mutableListOf()
 
     init {
-        if (_name.isBlank()) {
+        if (name.isBlank()) {
             throw IllegalArgumentException("이름은 비어 있을 수 없습니다")
         }
     }
 
-    fun updateName(_name: String) {
-        this._name = _name
+    fun updateName(name: String) {
+        this.name = name
     }
 
     fun loanBook(book: Book) {
