@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest
 // constructor 키워드를 활용하여 @Autowired를 붙이면 편함
 class UserServiceTest @Autowired constructor(
     private val userRepository: UserRepository,
-    private val userService: UserService,
+    private val userService: UserService
 ) {
 
     // 각 테스트가 실행된 이후 DB 클리어
