@@ -1,13 +1,11 @@
-package com.group.libraryapp;
+package com.group.libraryapp
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
-public class LibraryAppApplication {
-
-  public static void main(String[] args) {
-    SpringApplication.run(LibraryAppApplication.class, args);
-  }
-
+class LibraryAppApplication
+fun main(args: Array<String>) {
+//    SpringApplication.run(LibraryAppApplication::class.java, *args)
+    runApplication<LibraryAppApplication>(*args)
 }
