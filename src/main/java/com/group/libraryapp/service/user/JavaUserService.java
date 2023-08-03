@@ -5,7 +5,6 @@ import com.group.libraryapp.domain.user.UserRepository;
 import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class JavaUserService {
   @Transactional(readOnly = true)
   public List<UserResponse> getUsers() {
     return userRepository.findAll().stream()
-        .map(UserResponse::new)
+        .map(UserResponse.Companion::of)
         .collect(Collectors.toList());
   }
 

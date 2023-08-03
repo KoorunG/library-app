@@ -26,7 +26,7 @@ class UserService (
         get() = userRepository.findAll()
 //        .map { UserResponse(it) } // 파라미터가 하나인 경우 it 을 활용
 //        .map(::UserResponse)      // 생성자를 호출할 때 메소드 파라미터를 활용
-            .map { user -> UserResponse(user) } // 그러나 명시적으로 람다를 사용하는편이 직관적이다...
+            .map { user -> UserResponse.of(user) } // 그러나 명시적으로 람다를 사용하는편이 직관적이다...
 
     @Transactional
     fun updateUserName(request: UserUpdateRequest) {
