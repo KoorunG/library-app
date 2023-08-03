@@ -5,6 +5,8 @@ import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import com.group.libraryapp.dto.user.response.UserResponse
+import com.group.libraryapp.util.fail
+import com.group.libraryapp.util.findByIdOrThrow
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +31,7 @@ class UserService (
     @Transactional
     fun updateUserName(request: UserUpdateRequest) {
         //        userRepository.findByIdOrNull(request.id)?.updateName(request.name)
-        val user = userRepository.findByIdOrNull(request.id) ?: throw IllegalArgumentException()
+        val user = userRepository.findByIdOrThrow(request.id)
         user.updateName(request.name)
 
     }
