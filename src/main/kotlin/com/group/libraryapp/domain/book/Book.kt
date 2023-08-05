@@ -1,10 +1,6 @@
 package com.group.libraryapp.domain.book
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class Book(
@@ -12,7 +8,8 @@ class Book(
     val name: String,
 
     @Column(nullable = false)
-    val type: String,
+    @Enumerated(EnumType.STRING)    // DB에 Enum의 String값이 들어가도록 반드시 선언해주자
+    val type: BookType,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +27,7 @@ class Book(
     companion object {
         fun fixture(
             name: String = "책이름",
-            type: String = "책타입",
+            type: BookType = BookType.COMPUTER,
             id: Long? = null
         ) = Book(name = name, type = type, id = id)
     }
