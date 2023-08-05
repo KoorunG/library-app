@@ -2,6 +2,7 @@ package com.group.libraryapp.service.user
 
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
+import com.group.libraryapp.domain.user.UserStatus
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import com.group.libraryapp.dto.user.response.UserResponse
@@ -17,7 +18,7 @@ class UserService (
 ) {
     @Transactional
     fun saveUser(request: UserCreateRequest){
-        userRepository.save(User(request.name, request.age))
+        userRepository.save(User(name = request.name, age = request.age, status = UserStatus.ACTIVE))
     }
 
     // users를 코틀린의 프로퍼티로 선언, @Transactional은 get() 에 붙일 수 있다..!

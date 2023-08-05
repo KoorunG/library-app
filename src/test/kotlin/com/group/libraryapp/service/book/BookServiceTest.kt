@@ -7,6 +7,7 @@ import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
+import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
@@ -55,7 +56,7 @@ class BookServiceTest @Autowired constructor(
                 Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
-        val savedUser = userRepository.save(User("쿠렁", 30))
+        val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
 
         // when
         bookService.loanBook(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
@@ -65,7 +66,7 @@ class BookServiceTest @Autowired constructor(
         assertThat(results).hasSize(1)
         assertThat(results).extracting("bookName").containsExactlyInAnyOrder("카라마조프의 형제들1")
         assertThat(results).extracting("user").extracting("id").containsExactlyInAnyOrder(savedUser.id)
-        assertThat(results).extracting("isReturn").containsExactlyInAnyOrder(false)
+        assertThat(results).extracting("status").containsExactlyInAnyOrder(UserLoanStatus.LOANED)
     }
 
     @Test
@@ -78,12 +79,12 @@ class BookServiceTest @Autowired constructor(
                 Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
-        val savedUser = userRepository.save(User("쿠렁", 30))
+        val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
         userLoanHistoryRepository.save(
             UserLoanHistory(
                 savedUser,
                 "카라마조프의 형제들1",
-                false
+                UserLoanStatus.LOANED
             )
         ) // 이미 대출상태로 설정
 
@@ -105,12 +106,12 @@ class BookServiceTest @Autowired constructor(
                 Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
-        val savedUser = userRepository.save(User("쿠렁", 30))
+        val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
         userLoanHistoryRepository.save(
             UserLoanHistory(
                 savedUser,
                 "카라마조프의 형제들1",
-                false
+                UserLoanStatus.LOANED
             )
         ) // 이미 대출상태로 설정
 
@@ -122,6 +123,6 @@ class BookServiceTest @Autowired constructor(
         assertThat(results).hasSize(1)
         assertThat(results).extracting("bookName").containsExactlyInAnyOrder("카라마조프의 형제들1")
         assertThat(results).extracting("user").extracting("id").containsExactlyInAnyOrder(savedUser.id)
-        assertThat(results).extracting("isReturn").containsExactlyInAnyOrder(true)
+        assertThat(results).extracting("status").containsExactlyInAnyOrder(UserLoanStatus.RETURNED)
     }
 }

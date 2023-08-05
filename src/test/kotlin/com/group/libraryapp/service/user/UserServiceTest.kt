@@ -2,6 +2,7 @@ package com.group.libraryapp.service.user
 
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
+import com.group.libraryapp.domain.user.UserStatus
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import org.assertj.core.api.Assertions.assertThat
@@ -9,8 +10,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import java.math.MathContext
-import kotlin.random.Random
 
 // 동일 패키지의 자바코드를
 // 코틀린코드로 테스트
@@ -33,8 +32,8 @@ class UserServiceTest @Autowired constructor(
     @Test
     fun saveUser() {
         // given
-        val request = UserCreateRequest("쿠렁", null)
-        val user = User(request.name, request.age)
+        val request = UserCreateRequest(name = "쿠렁", age = null)
+        val user = User(name = request.name, age = request.age, status = UserStatus.ACTIVE)
         // when
         val saved = userRepository.save(user)
         val all = userRepository.findAll()
@@ -51,8 +50,8 @@ class UserServiceTest @Autowired constructor(
         // given - 테스트용 유저 정보 Repository에 저장
         userRepository.saveAll(
             listOf(
-                User("A", 20),
-                User("B", null),
+                User.fixture(name = "A", age = 20),
+                User.fixture(name = "B", age = null),
             )
         )
         // when
@@ -66,7 +65,7 @@ class UserServiceTest @Autowired constructor(
     @Test
     fun `유저 정보 업데이트하기`() {
         // given
-        val savedUser = userRepository.save(User("A", null))
+        val savedUser = userRepository.save(User.fixture(name = "A", age = null))
         val request = UserUpdateRequest(savedUser.id!!, "B")    // 엔티티에서는 nullable 타입으로 선언됐으나, PK이기 때문에 절대 null이 아니므로 단언문으로 처리한다.
         // when
         userService.updateUserName(request)
@@ -81,8 +80,8 @@ class UserServiceTest @Autowired constructor(
     fun `유저 삭제하기`() {
 
         // given
-        val userA = User("A", 30)
-        val userB = User("B", 25)
+        val userA = User.fixture(name = "A", age = 30)
+        val userB = User.fixture(name = "B", age = 25)
         userRepository.saveAll(listOf(userA, userB))
 
         // when
