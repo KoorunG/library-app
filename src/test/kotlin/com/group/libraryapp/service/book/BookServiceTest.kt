@@ -32,7 +32,7 @@ class BookServiceTest @Autowired constructor(
     @Test
     fun `책 저장하기`() {
         // given
-        val request = BookRequest("도둑맞은 집중력")
+        val request = BookRequest.fixture("도둑맞은 집중력")
 
         // when
         bookService.saveBook(request)
@@ -48,9 +48,9 @@ class BookServiceTest @Autowired constructor(
         // given
         bookRepository.saveAll(
             listOf(
-                Book("도둑맞은 집중력"),
-                Book("카라마조프의 형제들1"),
-                Book("사람의 목소리는 빛보다 멀리간다")
+                Book.fixture("도둑맞은 집중력"),
+                Book.fixture("카라마조프의 형제들1"),
+                Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
         val savedUser = userRepository.save(User("쿠렁", 30))
@@ -71,9 +71,9 @@ class BookServiceTest @Autowired constructor(
         // given
         bookRepository.saveAll(
             listOf(
-                Book("도둑맞은 집중력"),
-                Book("카라마조프의 형제들1"),
-                Book("사람의 목소리는 빛보다 멀리간다")
+                Book.fixture("도둑맞은 집중력"),
+                Book.fixture("카라마조프의 형제들1"),
+                Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
         val savedUser = userRepository.save(User("쿠렁", 30))
@@ -98,9 +98,9 @@ class BookServiceTest @Autowired constructor(
         // given
         bookRepository.saveAll(
             listOf(
-                Book("도둑맞은 집중력"),
-                Book("카라마조프의 형제들1"),
-                Book("사람의 목소리는 빛보다 멀리간다")
+                Book.fixture("도둑맞은 집중력"),
+                Book.fixture("카라마조프의 형제들1"),
+                Book.fixture("사람의 목소리는 빛보다 멀리간다")
             )
         )
         val savedUser = userRepository.save(User("쿠렁", 30))
