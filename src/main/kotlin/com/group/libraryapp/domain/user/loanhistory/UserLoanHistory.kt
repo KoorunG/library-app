@@ -11,7 +11,7 @@ class UserLoanHistory constructor(
     val bookName: String,
 
     @Enumerated(EnumType.STRING)
-    var status: UserLoanStatus,
+    var status: UserLoanStatus = UserLoanStatus.LOANED,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +19,13 @@ class UserLoanHistory constructor(
 ) {
     fun doReturn() {
         this.status = UserLoanStatus.RETURNED
+    }
+
+    companion object {
+        fun fixture(
+            user: User,
+            bookName: String,
+            status: UserLoanStatus,
+        ) = UserLoanHistory(user = user, bookName = bookName, status = status)
     }
 }

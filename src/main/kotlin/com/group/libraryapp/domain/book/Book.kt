@@ -28,7 +28,6 @@ class Book(
         fun fixture(
             name: String = "책이름",
             type: BookType = BookType.COMPUTER,
-            id: Long? = null
-        ) = Book(name = name, type = type, id = id)
+        ) = Book(name = name, type = type)
     }
 }

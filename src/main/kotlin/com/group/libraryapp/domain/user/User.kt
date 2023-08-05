@@ -49,7 +49,6 @@ class User constructor( // 주생성자에 constuctor 키워드를 붙이면 Ent
             name: String = "테스트유저",
             status: UserStatus = UserStatus.ACTIVE,
             age: Int? = null,
-            id: Long? = null
-        ) = User(name = name, age = age, id = id, status = status)
+        ) = User(name = name, age = age, status = status)
     }
 }

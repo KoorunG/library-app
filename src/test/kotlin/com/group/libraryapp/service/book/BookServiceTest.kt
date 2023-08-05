@@ -81,10 +81,10 @@ class BookServiceTest @Autowired constructor(
         )
         val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
         userLoanHistoryRepository.save(
-            UserLoanHistory(
-                savedUser,
-                "카라마조프의 형제들1",
-                UserLoanStatus.LOANED
+            UserLoanHistory.fixture(
+                user = savedUser,
+                bookName = "카라마조프의 형제들1",
+                status = UserLoanStatus.LOANED
             )
         ) // 이미 대출상태로 설정
 
@@ -108,10 +108,10 @@ class BookServiceTest @Autowired constructor(
         )
         val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
         userLoanHistoryRepository.save(
-            UserLoanHistory(
-                savedUser,
-                "카라마조프의 형제들1",
-                UserLoanStatus.LOANED
+            UserLoanHistory.fixture(
+                user = savedUser,
+                bookName = "카라마조프의 형제들1",
+                status = UserLoanStatus.LOANED
             )
         ) // 이미 대출상태로 설정
 
