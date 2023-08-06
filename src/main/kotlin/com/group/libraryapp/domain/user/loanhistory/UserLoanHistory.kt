@@ -21,6 +21,10 @@ class UserLoanHistory constructor(
         this.status = UserLoanStatus.RETURNED
     }
 
+    val isReturn
+        get() = this.status == UserLoanStatus.RETURNED
+
+
     companion object {
         fun fixture(
             user: User,

@@ -48,20 +48,5 @@ class UserService(
     // 유저의 대출기록을 가져오는 메소드
     @Transactional(readOnly = true)
     fun getUserLoanHistories(): List<UserLoanHistoryResponse> =
-        // 1. userRepository의 모든 유저 목록을 가져온다.
-//        userRepository.findAll()
-            userRepository.findAllWithHistories()
-            .map { user ->
-            // 2. User -> UserLoanHistoryResponse로 매핑한다.
-            UserLoanHistoryResponse(
-                name = user.name,
-                // 3. 여기서 books :: user에 걸린 책 대출내역을 가져와야 하므로 다시 map을 사용하여 매핑해야한다.
-                books = user.userLoanHistories.map { history ->
-                    BookHistoryResponse(
-                        name = history.bookName,
-                        // 4. 대출기록의 status를 Enum으로 관리하고 있기때문에 풀어준다.
-                        isReturn = history.status == UserLoanStatus.RETURNED
-                    )
-                })
-        }
+            userRepository.findAllWithHistories().map(UserLoanHistoryResponse::of)
 }

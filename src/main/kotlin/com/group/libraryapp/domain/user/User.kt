@@ -3,6 +3,7 @@ package com.group.libraryapp.domain.user
 import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
+import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import javax.persistence.*
 
 @Entity
