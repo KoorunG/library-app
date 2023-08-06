@@ -1,10 +1,16 @@
 package com.group.libraryapp.service.user
 
+import com.group.libraryapp.domain.book.Book
+import com.group.libraryapp.domain.book.BookRepository
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.UserStatus
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
+import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -19,6 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest
 // constructor 키워드를 활용하여 @Autowired를 붙이면 편함
 class UserServiceTest @Autowired constructor(
     private val userRepository: UserRepository,
+    private val bookRepository: BookRepository,
+    private val userLoanHistoryRepository: UserLoanHistoryRepository,
     private val userService: UserService
 ) {
 
@@ -91,5 +99,59 @@ class UserServiceTest @Autowired constructor(
         // then
         val results = userService.users
         assertThat(results).isEmpty()
+    }
+
+    @Test
+    fun `책을 한권도 빌리지 않은 유저도 응답이 넘어와야 한다`() {
+        // given
+        val user = User.fixture("쿠렁")
+        val book1 = Book.fixture("카라마조프의 형제들1")
+        userRepository.save(user)
+        bookRepository.save(book1)
+
+        // when
+        val history = userService.getUserLoanHistories()
+        // then
+        assertThat(history).hasSize(1)  // 응답이 제대로 넘어오는지
+        assertThat(history[0].name).isEqualTo("쿠렁") // 유저정보가 제대로 등록됐는지
+        assertThat(history[0].books).isEmpty()  // books 컬렉션이 비어있는지
+    }
+
+    @Test
+    fun `여러권의 책을 빌린 경우 적절한 응답이 넘어오는지 확인한다`() {
+        // given
+        val user = User.fixture("쿠렁")
+        val user2 = User.fixture("쿠렁2")
+        val book1 = Book.fixture("카라마조프의 형제들1")
+        val book2 = Book.fixture("카라마조프의 형제들2")
+        val book3 = Book.fixture("안나 카레니나 1")
+        val book4 = Book.fixture("안나 카레니나 2")
+
+        userRepository.saveAll(listOf(user, user2))
+        bookRepository.saveAll(listOf(book1, book2, book3, book4))
+
+        val history1 = UserLoanHistory.fixture(user, "카라마조프의 형제들1", UserLoanStatus.LOANED)
+        val history2 = UserLoanHistory.fixture(user, "카라마조프의 형제들2", UserLoanStatus.RETURNED)
+        val history3 = UserLoanHistory.fixture(user2, "안나 카레니나 1", UserLoanStatus.RETURNED)
+        val history4 = UserLoanHistory.fixture(user2, "안나 카레니나 2", UserLoanStatus.LOANED)
+
+        userLoanHistoryRepository.saveAll(listOf(history1, history2, history3, history4))
+
+        // when
+        val histories = userService.getUserLoanHistories()
+
+        // then
+        assertThat(histories).hasSize(2)    // user별로 응답이 날아와야 한다.
+        assertThat(histories).extracting("name").containsExactlyInAnyOrder("쿠렁", "쿠렁2") // user의 정보가 적절하게 들어있어야 한다.
+
+        assertThat(histories[0].name).isEqualTo("쿠렁")
+        assertThat(histories[0].books).hasSize(2)
+        assertThat(histories[0].books).extracting("name").containsExactlyInAnyOrder("카라마조프의 형제들1", "카라마조프의 형제들2")
+        assertThat(histories[0].books).extracting("isReturn").containsExactlyInAnyOrder(false, true)
+
+        assertThat(histories[1].name).isEqualTo("쿠렁2")
+        assertThat(histories[1].books).hasSize(2)
+        assertThat(histories[1].books).extracting("name").containsExactlyInAnyOrder("안나 카레니나 1", "안나 카레니나 2")
+        assertThat(histories[1].books).extracting("isReturn").containsExactlyInAnyOrder(false, true)
     }
 }
