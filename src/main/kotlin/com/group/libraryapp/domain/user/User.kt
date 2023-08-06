@@ -16,13 +16,13 @@ class User constructor( // 주생성자에 constuctor 키워드를 붙이면 Ent
 
     val age: Int? = null,
 
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val userLoanHistories: MutableList<UserLoanHistory> = mutableListOf(),
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 ) {
-
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val userLoanHistories: MutableList<UserLoanHistory> = mutableListOf()
 
     init {
         if (name.isBlank()) {

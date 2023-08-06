@@ -49,7 +49,9 @@ class UserService(
     @Transactional(readOnly = true)
     fun getUserLoanHistories(): List<UserLoanHistoryResponse> =
         // 1. userRepository의 모든 유저 목록을 가져온다.
-        userRepository.findAll().map { user ->
+//        userRepository.findAll()
+            userRepository.findAllWithHistories()
+            .map { user ->
             // 2. User -> UserLoanHistoryResponse로 매핑한다.
             UserLoanHistoryResponse(
                 name = user.name,
