@@ -33,8 +33,12 @@ class BookController(
     }
 
     @GetMapping("/loan")
-    fun countLoanedBook() = bookService.countLoanedBook()
+    fun countLoanedBook() =
+//        bookService.countLoanedBook()
+        bookService.countLoanedBookByQuery()
 
     @GetMapping("/stat")
-    fun getBookStatistics(): List<BookStatResponse> = bookService.getBookStatistics()
+    fun getBookStatistics(): List<BookStatResponse> =
+//        bookService.getBookStatistics()
+        bookService.getBookStatisticsByQuery()
 }
