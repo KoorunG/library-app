@@ -1,0 +1,23 @@
+package com.group.libraryapp.domain.user
+
+import com.group.libraryapp.domain.user.QUser.user
+import com.group.libraryapp.domain.user.loanhistory.QUserLoanHistory.userLoanHistory
+import com.querydsl.jpa.impl.JPAQueryFactory
+
+interface UserRepositoryCustom {
+    fun findWithHistoriesQueryDsl(): List<User>
+}
+
+class UserRepositoryCustomImpl(
+    private val factory: JPAQueryFactory
+): UserRepositoryCustom {
+
+    override fun findWithHistoriesQueryDsl(): List<User> =
+        factory
+            .select(user)
+            .distinct()
+            .from(user)
+            .leftJoin(userLoanHistory)
+            .on(user.id.eq(userLoanHistory.user.id)).fetchJoin()
+            .fetch()
+}
