@@ -8,6 +8,8 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
     // 코틀린 spring 플러그인 추가 (allOpen 옵션 포함)
     id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
+    // 코틀린 kapt 플러그인 추가 (query-dsl)
+    id 'org.jetbrains.kotlin.kapt' version '1.6.21'
 }
 
 //allOpen {
@@ -35,6 +37,10 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
     // 코틀린 jackon-kotlin 의존성 추가
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2'
+    // 코틀린 query-dsl 관련 의존성 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    kapt 'com.querydsl:querydsl-apt:5.0.0:jpa'
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 tasks.named('test') {
