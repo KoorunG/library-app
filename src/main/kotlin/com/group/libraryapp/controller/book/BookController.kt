@@ -40,5 +40,6 @@ class BookController(
     @GetMapping("/stat")
     fun getBookStatistics(): List<BookStatResponse> =
 //        bookService.getBookStatistics()
-        bookService.getBookStatisticsByQuery()
+//        bookService.getBookStatisticsByQuery()
+        bookService.getBookStatisticsByQueryDsl()
 }

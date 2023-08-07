@@ -156,8 +156,9 @@ class BookServiceTest @Autowired constructor(
         ))
 
         // when
-        val results = bookService.getBookStatistics()
-
+        val results =
+//            bookService.getBookStatistics()
+                bookService.getBookStatisticsByQueryDsl()
         // then
         assertThat(results).hasSize(4)  // 없는 분야는 응답에 포함되지 않아야 한다.
         assertThat(results).extracting("type").doesNotContain(BookType.ECONOMY) // "경제" 분야는 응답에 포함되지 않는다.
