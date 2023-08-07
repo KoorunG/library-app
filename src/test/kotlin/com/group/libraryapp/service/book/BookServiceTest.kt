@@ -125,4 +125,42 @@ class BookServiceTest @Autowired constructor(
         assertThat(results).extracting("user").extracting("id").containsExactlyInAnyOrder(savedUser.id)
         assertThat(results).extracting("status").containsExactlyInAnyOrder(UserLoanStatus.RETURNED)
     }
+
+    @Test
+    fun `책 대여 권수를 정상 확인한다`() {
+        // given
+        val user = userRepository.save(User.fixture("쿠렁"))
+        userLoanHistoryRepository.saveAll(listOf(
+            UserLoanHistory.fixture(user, "A", UserLoanStatus.LOANED),
+            UserLoanHistory.fixture(user, "B", UserLoanStatus.LOANED),
+            UserLoanHistory.fixture(user, "C", UserLoanStatus.LOANED),
+            UserLoanHistory.fixture(user, "D", UserLoanStatus.RETURNED),
+        ))
+
+        // when
+        val results = bookService.countLoanedBook()
+
+        // then
+        assertThat(results).isEqualTo(3)
+    }
+
+    @Test
+    fun `등록된 책의 통계를 확인힌다`() {
+        // given
+        bookRepository.saveAll(listOf(
+            Book.fixture("과학책", BookType.SCIENCE),
+            Book.fixture("과학책2", BookType.SCIENCE),
+            Book.fixture("사회책", BookType.SOCIETY),
+            Book.fixture("언어책", BookType.LANGUAGE),
+            Book.fixture("컴퓨터책", BookType.COMPUTER)
+        ))
+
+        // when
+        val results = bookService.getBookStatistics()
+
+        // then
+        assertThat(results).hasSize(4)  // 없는 분야는 응답에 포함되지 않아야 한다.
+        assertThat(results).extracting("type").doesNotContain(BookType.ECONOMY) // "경제" 분야는 응답에 포함되지 않는다.
+        assertThat(results).extracting("count").containsExactlyInAnyOrder(2, 1, 1, 1)   // 분야별 카운트 확인
+    }
 }

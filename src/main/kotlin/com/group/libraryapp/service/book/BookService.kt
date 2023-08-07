@@ -3,11 +3,13 @@ package com.group.libraryapp.service.book
 import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.book.BookRepository
 import com.group.libraryapp.domain.user.UserRepository
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.util.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -39,4 +41,15 @@ class BookService(
         // findByName의 결과가 null이 아닐 경우 returnBook을 실행 (Safe call 이용)
         userRepository.findByName(request.userName)?.returnBook(request.bookName)
     }
+
+    @Transactional(readOnly = true)
+    // count()를 써도 되지만 size로 Int값을 바로 꺼낼수도 있다.
+    fun countLoanedBook(): Int = userLoanHistoryRepository.findByStatus(UserLoanStatus.LOANED).size
+
+    @Transactional(readOnly = true)
+    fun getBookStatistics() =
+        bookRepository.findAll()
+            .groupingBy { it.type }
+            .eachCount()
+            .map { (type, count) -> BookStatResponse(type, count) } // 코틀린의 구조분해를 이용하여 깔끔하게 처리
 }
