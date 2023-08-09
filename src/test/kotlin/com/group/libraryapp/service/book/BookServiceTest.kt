@@ -29,6 +29,8 @@ class BookServiceTest @Autowired constructor(
     fun `DB 초기화`() {
         bookRepository.deleteAll()
         userRepository.deleteAll()  // 여기서 userLoadHistoryRepository는 자동으로 제거된다 (orphanRemoval 옵션 true로 설정되어있는 상태..)
+
+        println(KotlinVersion.CURRENT)
     }
 
     @Test
@@ -59,7 +61,8 @@ class BookServiceTest @Autowired constructor(
         val savedUser = userRepository.save(User.fixture(name = "쿠렁", age = 30))
 
         // when
-        bookService.loanBook(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
+//        bookService.loanBook(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
+        bookService.loanBookQueryDsl(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
 
         // then
         val results = userLoanHistoryRepository.findAll()
@@ -91,6 +94,7 @@ class BookServiceTest @Autowired constructor(
         // when - then
         val message = assertThrows<IllegalArgumentException> {
             bookService.loanBook(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
+            bookService.loanBookQueryDsl(BookLoanRequest("쿠렁", "카라마조프의 형제들1"))
         }.message
 
         assertThat(message).isEqualTo("진작 대출되어 있는 책입니다")
@@ -138,10 +142,12 @@ class BookServiceTest @Autowired constructor(
         ))
 
         // when
-        val results = bookService.countLoanedBook()
+//        val results = bookService.countLoanedBook()
+        val results = bookService.countLoanedBookQueryDsl()
 
         // then
         assertThat(results).isEqualTo(3)
+
     }
 
     @Test
